@@ -1,0 +1,262 @@
+:root {
+    /* Color Palette */
+    --primary-color: #2563eb; /* Blue 600 */
+    --primary-hover: #1d4ed8; /* Blue 700 */
+    --primary-light: #eff6ff; /* Blue 50 */
+    --secondary-color: #475569; /* Slate 600 */
+    --bg-color: #f8fafc; /* Slate 50 */
+    --surface-color: #ffffff;
+    --text-main: #1e293b; /* Slate 800 */
+    --text-muted: #64748b; /* Slate 500 */
+    --border-color: #e2e8f0; /* Slate 200 */
+    --success-color: #22c55e;
+    --error-color: #ef4444;
+    --warning-color: #f59e0b;
+    
+    /* Layout */
+    --header-height: 64px;
+    --border-radius: 12px;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    
+    /* Typography */
+    --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent body scroll, handle in grid container if needed */
+}
+
+/* App Layout */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.app-header {
+    height: var(--header-height);
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    box-shadow: var(--shadow-sm);
+    z-index: 10;
+    position: relative; /* For absolute positioning of timer */
+}
+
+.header-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.header-timer {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+    background-color: var(--surface-color); /* Ensure text is readable over potential overlaps */
+    padding: 0 16px; /* Add some breathing room */
+    border-radius: 8px; /* Optional: adds a subtle touch */
+}
+
+.header-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Grid Layout */
+.grid-wrapper {
+    /* Responsive Square Logic */
+    width: min(calc(100vw - 48px), calc(100vh - var(--header-height) - 48px));
+    height: min(calc(100vw - 48px), calc(100vh - var(--header-height) - 48px));
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: 4px; /* Inner spacing for grid */
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.row {
+    width: 100%;
+    flex: 1; /* Use flex to distribute height equally */
+    display: flex;
+    gap: 2px;
+}
+
+.cell {
+    flex: 1;
+    height: 100%;
+    aspect-ratio: 1/1; /* Ensure 1:1 aspect ratio */
+    background-color: var(--primary-light);
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+    position: relative; /* For trace lines or overlays */
+}
+
+/* Cell States */
+.normal-cell {
+    /* Default state */
+}
+
+.hovered-cell {
+    background-color: #dbeafe; /* Blue 100 */
+    transform: scale(0.98);
+}
+
+.correct-cell {
+    background-color: var(--success-color) !important;
+    color: white !important;
+}
+
+.wrong-cell {
+    background-color: var(--error-color) !important;
+    color: white !important;
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.traced-cell {
+    opacity: 0.6;
+    background-color: #cbd5e1; /* Slate 300 */
+}
+
+.cell-symbol {
+    font-weight: 700;
+    /* font-size set dynamically in JS/HTML */
+    line-height: 1;
+}
+
+/* Animations */
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-icon {
+    background-color: transparent;
+    color: var(--secondary-color);
+    padding: 8px;
+    font-size: 1.2rem;
+}
+
+.btn-icon:hover {
+    background-color: #f1f5f9; /* Slate 100 */
+    color: var(--primary-color);
+}
+
+/* Center Dot */
+.center-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: var(--error-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Mouse Map Canvas */
+.mouse-map {
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+}
+
+/* W3 Modal Overrides */
+.w3-modal {
+    z-index: 50 !important;
+    padding-top: 50px !important;
+    background-color: rgba(0,0,0,0.6) !important;
+    backdrop-filter: blur(4px);
+}
+
+.w3-modal-content {
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+/* Utility classes for Vue toggle */
+.display-block { display: block !important; }
+.display-none { display: none !important; }
+
+/* Rotations */
+.rotate-90 { display: inline-block; transform: rotate(90deg); }
+.rotate-180 { display: inline-block; transform: rotate(180deg); }
+.rotate-270 { display: inline-block; transform: rotate(270deg); }
+
+.spin-right { display: inline-block; animation: spin-right 2s linear infinite; }
+.spin-left { display: inline-block; animation: spin-left 2s linear infinite; }
+
+@keyframes spin-right { 100% { transform: rotate(360deg); } }
+@keyframes spin-left { 100% { transform: rotate(-360deg); } }
